@@ -127,6 +127,6 @@ def writeBindFile(cfgFileName, txtFileName, msbetw, deskey):
 # ------------------------------------------------------------------------------
 # example calls to the writeBindFile function
 # uncomment to generate files, add your own calls below.
-writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
-writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
+# writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
+# writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
 # ------------------------------------------------------------------------------
