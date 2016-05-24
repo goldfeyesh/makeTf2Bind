@@ -13,10 +13,10 @@ README
   (https://reddit.com/r/worldnews/comments/7da5i/police_raids_reveal_baby_farms/c06cqxb)
 
 ------------- cuiltheory2.cfg was generated from cuiltheorycut.txt -------------
-  cuiltheorycut.txt is a file i spaced into line phrases that roughly make sense
-  and are less than 127 characters long per line.
+  cuiltheorycut.txt is the first 4 cuils of cuil theory text i spaced into line
+  phrases that roughly make sense and are <= 127 characters long per line.
   if you want to divide your file int <= 127 character lines by hand,
-  feel free to do that. my code will not mess with your partitioning.
+  feel free to do it. my code will not mess with your partitioning.
 
   example function calls are at bottom of makeTf2Bind.py
 
