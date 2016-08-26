@@ -1,7 +1,8 @@
 # WHO:   Alice Li (goldfeyesh)
-# WHEN:  5.20.2016
+# WHEN:  5.20.2016 (created)
+#        8.25.2016 (last updated)
 # WHAT:  makeTf2Bind.py
-#        generate rolling bind .cfg files from .txt files
+#        generate rolling and random bind .cfg files from .txt files
 
 # NOTE: call the function writeBindFile to generate your bind config file.
 #       if you want to divide your file int <= 127 character lines by hand,
@@ -17,6 +18,7 @@ MAX_CHAR = 127       # max number of characters per line of text for tf2 chat
 MAX_CMD = 14         # can't have more than 30 commands per alias. 2*14 + 1 = 29
                      # (say command + wait command) * (14 times) + (next alias)
 
+# helper function to read lines from file and prepares them to be processed
 # params:   filename: the name of the file to be read
 # returns:  array of lines, each <= 127 characters long
 def linesFromFile(filename):
@@ -33,7 +35,8 @@ def linesFromFile(filename):
     inputFile.close()
     return fixedLines
 
-# params:  longstr: long string to break into pieces and maintain whole words
+# helper function to break up overly long lines into chunks and keep whole words
+# params:  longstr: long string to break into pieces
 # returns: array of strings, all 127 characters or less
 def fixLine(longstr):
     fixedLines = []        # array of strings <= 127 chars long to return
@@ -61,19 +64,20 @@ def fixLine(longstr):
             mindex += lastspace + 1
     return fixedLines
 
+# writes a cfg file for the rolling bind
 # params:  cfgFileName: name of the file you want to create and write into
 #          txtFileName: text file to read from
 #          msbetw:      number of milliseconds between each message
 #          deskey:      preferred key to bind: for recognized key names, see
 #                                             wiki.teamfortress.com/wiki/Scripting
-# returns: nothing, creates cfg file
+# returns: nothing
 def writeBindFile(cfgFileName, txtFileName, msbetw, deskey):
 
     bindtxt = linesFromFile(txtFileName)
 
     outFile = open(cfgFileName + ".cfg", "w")
 
-    outFile.write('bind "' + deskey + '" "' + cfgFileName[0:2] + '0"\n')
+    outFile.write(deskey, cfgFileName[0:2] + '0')
     counter = 0                       # keeps count of what line number to write
     aliaslist = []                    # list to populate full of alias## strings
 
@@ -124,9 +128,69 @@ def writeBindFile(cfgFileName, txtFileName, msbetw, deskey):
                   + 'she hopes you have a nice time B) ---------------"\n')
     outFile.close()
 
+
+# this function will write a randomized bind file
+# params:  cfgFileName: name of the file you want to create and write into
+#          txtFileName: text file to read from
+#          deskey:      preferred key to bind: for recognized key names, see
+#                                             wiki.teamfortress.com/wiki/Scripting
+# returns: nothing, creates cfg file
+def writeRandomBindFile(cfgFileName, txtFileName, deskey):
+    bindtxt = linesFromFile(txtFileName)
+
+    outFile = open(cfgFileName + ".cfg", "w")
+
+    counter = 0                       # keeps count of what line number to write
+    aliaslist = []                    # list to populate full of alias# strings
+    aliastxt = cfgFileName[0]         # alias letter string
+
+    # storing these strings reduces repetitiveness and tediousness
+    cyclestr = aliastxt + '_cycle'          # alias_cycle string
+    dicestr = aliastxt + '_diceroll_'       # alias_diceroll_ string
+
+    # forloop writes all strings in bindtxt to file:
+    for phrase in bindtxt:
+        aliastxt = cfgFileName[0] + str(counter)
+        outFile.write('alias "' + aliastxt + '" "say ' + phrase + '"\n')
+        aliaslist.append(aliastxt)
+        counter += 1
+
+    # for loop writes diceroll aliases and cycle aliases
+    for num in range(0, counter - 1):
+        dicestr = aliastxt + '_diceroll_'
+        outFile.write('alias "' + dicestr + str(num) + '" "alias ' + aliastxt + '_result ' +
+                      aliastxt + str(num) + '; alias ' + cyclestr + ' ' + dicestr+ str(num + 1) + '"\n')
+
+    outFile.write('alias "' + dicestr + str(counter - 1) + '" "alias ' + aliastxt + '_result ' +
+                  aliastxt + str(counter - 1) + '; alias ' + cyclestr + ' ' + dicestr + '1"\n')
+
+    outFile.write('alias ' + cyclestr + ' ' + dicestr + '1\n')
+
+    outFile.write('bind ' + deskey + ' "' + aliastxt + '_result; ' + cyclestr + '"\n')
+
+    # randomize the binds with wasd
+    outFile.write(bind('w', '+forward; ' + cyclestr))
+    outFile.write(bind('a', '+moveleft; ' + cyclestr))
+    outFile.write(bind('s', '+back; ' + cyclestr))
+    outFile.write(bind('d', '+moveright; ' + cyclestr))
+
+    outFile.write('echo "' + "---------------------------------- " + cfgFileName
+                  + ' on key ' + deskey + ' loaded ----------------------------------"\n')
+    outFile.write('echo "--------------- bind generator written by goldfeyesh. '
+                  + 'she hopes you have a nice time B) ---------------"\n')
+    outFile.close()
+
+# helper function for creating the bind command string
+# params:  target: preferred key to bind: for recognized key names, see
+#          tobind: command(s) to bind to the target key
+# returns: string to bind whatever command tobind to target
+def bind(target, tobind):
+    return 'bind ' + target + ' "' + tobind + '"\n'
+
 # ------------------------------------------------------------------------------
-# example calls to the writeBindFile function
+# example function calls to writeBindFile and writeRandomBindFile
 # uncomment to generate files, add your own calls below.
-writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
-writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
+#writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
+#writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
+#writeRandomBindFile('birdsrights', 'birdsrights.txt', 'KP_PLUS')
 # ------------------------------------------------------------------------------
