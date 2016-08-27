@@ -1,7 +1,5 @@
 README
 
-  i made this to satisfy all my bind meme needs.
-
   in makeTf2Bind.py
     call writeBindFile to generate a rolling bind config file.
     or writeRandomBindFile to generate a random bind config file.
@@ -29,7 +27,5 @@ README
   (https://twitter.com/ProBirdRights)
 
   example function calls are at bottom of makeTf2Bind.py
-
-  some binds i've generated can be found here: http://pastebin.com/u/goldfeyesh
 
   please contact goldfeyesh with questions: steamcommunity.com/id/goldfeyesh/
