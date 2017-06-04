@@ -191,10 +191,10 @@ def bind(target, tobind):
 # ------------------------------------------------------------------------------
 # example function calls to writeBindFile and writeRandomBindFile
 # uncomment to generate files, add your own calls below.
+
 # writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
 # writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
+
 # writeRandomBindFile('birdsrights', 'birdsrights.txt', 'END')
-# writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
-# writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
 # writeRandomBindFile('guyfieri', 'guyfieriquotes.txt', 'END')
 # ------------------------------------------------------------------------------
