@@ -140,33 +140,34 @@ def writeRandomBindFile(cfgFileName, txtFileName, deskey):
 
     outFile = open(cfgFileName + ".cfg", "w")
 
-    counter = 0                       # keeps count of what line number to write
-    aliaslist = []                    # list to populate full of alias# strings
-    aliastxt = cfgFileName[0]         # alias letter string
+    counter = 0                          # keeps count of what line number to write
+    aliaslist = []                       # list to populate full of alias# strings
+    alet = cfgFileName[0]                # alias letter string
 
-    # storing these strings reduces repetitiveness and tediousness
-    cyclestr = aliastxt + '_cycle'          # alias_cycle string
-    dicestr = aliastxt + '_diceroll_'       # alias_diceroll_ string
+    cyclestr = alet + '_cycle '          # a_cycle string
+    resultstr = alet + '_result '        # a_result string
+    dicestr = alet + '_diceroll_'        # a_diceroll_ string
 
     # forloop writes all strings in bindtxt to file:
     for phrase in bindtxt:
-        aliastxt = cfgFileName[0] + str(counter)
-        outFile.write('alias "' + aliastxt + '" "say ' + phrase + '"\n')
-        aliaslist.append(aliastxt)
+        aliascounter = cfgFileName[0] + str(counter)
+        outFile.write('alias "' + aliascounter + '" "say ' + phrase + '"\n')
+        aliaslist.append(aliascounter)
         counter += 1
 
     # for loop writes diceroll aliases and cycle aliases
     for num in range(0, counter - 1):
-        dicestr = aliastxt + '_diceroll_'
-        outFile.write('alias "' + dicestr + str(num) + '" "alias ' + aliastxt + '_result ' +
-                      aliastxt + str(num) + '; alias ' + cyclestr + ' ' + dicestr+ str(num + 1) + '"\n')
+        diceroll = 'alias "' + dicestr + str(num) + '" '
+        result = '"alias ' + resultstr + aliaslist[num] + '; '
+        cyclediceroll = 'alias ' + cyclestr + ' ' + dicestr + str(num + 1) + '"\n'
+        outFile.write(diceroll + result + cyclediceroll)
 
-    outFile.write('alias "' + dicestr + str(counter - 1) + '" "alias ' + aliastxt + '_result ' +
-                  aliastxt + str(counter - 1) + '; alias ' + cyclestr + ' ' + dicestr + '1"\n')
+    outFile.write('alias "' + dicestr + str(counter - 1) + '" "alias ' + resultstr +
+                  aliaslist[-1] + '; alias ' + cyclestr + ' ' + dicestr + '0"\n')
 
-    outFile.write('alias ' + cyclestr + ' ' + dicestr + '1\n')
+    outFile.write('alias ' + cyclestr + ' ' + dicestr + '0\n')
 
-    outFile.write('bind ' + deskey + ' "' + aliastxt + '_result; ' + cyclestr + '"\n')
+    outFile.write('bind ' + deskey + ' "' + resultstr + '; ' + cyclestr + '"\n')
 
     # randomize the binds with wasd
     outFile.write(bind('w', '+forward; ' + cyclestr))
@@ -190,12 +191,10 @@ def bind(target, tobind):
 # ------------------------------------------------------------------------------
 # example function calls to writeBindFile and writeRandomBindFile
 # uncomment to generate files, add your own calls below.
-<<<<<<< HEAD
-#writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
-#writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
-#writeRandomBindFile('birdsrights', 'birdsrights.txt', 'KP_PLUS')
-=======
 # writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
 # writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
->>>>>>> origin/master
+# writeRandomBindFile('birdsrights', 'birdsrights.txt', 'END')
+# writeBindFile('cuiltheory1', 'cuiltheory.txt', 266, 'KP_ENTER')
+# writeBindFile('cuiltheory2', 'cuiltheorycut.txt', 266, 'KP_PLUS')
+# writeRandomBindFile('guyfieri', 'guyfieriquotes.txt', 'END')
 # ------------------------------------------------------------------------------
